@@ -27,9 +27,9 @@ Inside your specific config file:
 
 ```js
 // .eslintrc.js
-import config from '@nejcm/configs/src/.eslintrc.js';
-export default {
-  ...config,
+const config = require('@nejcm/configs/src/.eslintrc.js');
+
+module.exports = Object.assign(config, {
   // your overriding or other config options
-};
+});
 ```
