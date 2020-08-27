@@ -8,15 +8,14 @@ module.exports = {
   ],
   env: {
     browser: true,
+    node: true,
     es6: true,
     jest: true,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jest', 'prettier'],
   parserOptions: {
     sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
+    ecmaVersion: 2020,
   },
   settings: {
     'import/resolver': {
@@ -38,5 +37,7 @@ module.exports = {
     eqeqeq: 'off',
     'import/no-useless-path-segments': 'off',
     'no-eq-null': 'off',
+    'import/no-useless-path-segments': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
   },
 };
