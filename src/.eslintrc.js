@@ -35,7 +35,6 @@ module.exports = {
     'no-debugger': 'warn',
     'no-unused-vars': 'error',
     eqeqeq: 'off',
-    'import/no-useless-path-segments': 'off',
     'no-eq-null': 'off',
     'import/no-useless-path-segments': 'off',
     '@typescript-eslint/no-var-requires': 'off',
