@@ -2,18 +2,10 @@
 
 Different config files I use in my projects.
 
-## Types
+## Configs
 
-- .eslintignore
-- .eslintrc.js
-- .gitignore
-- .prettierignore
-- babel.config.js
-- jest.config.js
-- lint-staged.config.js
 - prettier.config.js
-- release.config.js
-- tsconfig.json
+- global.d.ts
 
 ## Install
 
@@ -25,11 +17,26 @@ npm install @nejcm/configs --save-dev
 
 Inside your specific config file:
 
+**.eslintrc.js**
+
 ```js
-// .eslintrc.js
 const config = require('@nejcm/configs/src/.eslintrc.js');
 
 module.exports = Object.assign(config, {
   // your overriding or other config options
 });
+```
+
+**tsconfig.json**
+
+```json
+{
+  "include": [
+    ...,
+    "node_modules/@nejcm/configs/src/global.d.ts"
+  ],
+   "compilerOptions": {
+    ...
+  },
+}
 ```

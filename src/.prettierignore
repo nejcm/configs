@@ -1,7 +1,0 @@
-node_modules/
-coverage/
-dist/
-build/
-preact/
-package-lock.json
-package.json
