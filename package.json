@@ -1,7 +1,7 @@
 {
   "name": "@nejcm/configs",
   "private": false,
-  "version": "1.0.5",
+  "version": "1.2.0",
   "author": "Nejc Mursic <nmursi2@gmail.com> (https://github.com/nejcm)",
   "description": "Common configs I use accross my projects.",
   "repository": {

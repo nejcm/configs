@@ -3,7 +3,7 @@ declare type Dict<T = unknown> = Record<string | number | symbol, T>;
 /** Object value types */
 declare type ValueOf<T> = T[keyof T];
 /** Keys with values of given type */
-export type KeyOfType<T, U> = {
+declare type KeyOfType<T, U> = {
   [P in keyof T]-?: T[P] extends U ? P : never;
 }[keyof T];
 
@@ -14,7 +14,7 @@ declare type Nullable<T> = T | null;
 /** Partial or null object */
 declare type PartialNull<T> = { [K in keyof T]: T[K] | null };
 /** Deep partial object */
-export type DeepPartial<T> = {
+declare type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer I>
     ? Array<DeepPartial<I>>
     : DeepPartial<T[P]>;
