@@ -2,6 +2,8 @@
 declare type Dict<T = unknown> = Record<string | number | symbol, T>;
 /** Object value types */
 declare type ValueOf<T> = T[keyof T];
+/** Keys of type */
+declare type KeysOf<T> = (keyof T)[];
 /** Keys with values of given type */
 declare type KeyOfType<T, U> = {
   [P in keyof T]-?: T[P] extends U ? P : never;

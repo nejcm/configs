@@ -1,0 +1,80 @@
+name: 'Bundle size reporter'
+description: 'Post bundle size difference compared to another branch'
+inputs:
+  branch:
+    description: 'Branch to compare to'
+    required: true
+    default: 'main'
+  paths:
+    description:
+      'Paths to json file bundle size report or folder containing bundles'
+    required: true
+    default: '/'
+  onlyDiff:
+    description: 'Report only different sizes'
+    required: false
+    default: 'false'
+
+  # Comment
+  comment:
+    description: 'Post comment'
+    required: false
+    default: 'true'
+  header:
+    description: 'Comment header'
+    required: false
+    default: 'Bundle size report'
+  append:
+    description: 'Append comment'
+    required: false
+    default: 'false'
+  ghToken:
+    description: 'Github token'
+    required: false
+
+  # Summary
+  summary:
+    description: 'Post summary'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    # Checkout branch to compare to
+    - name: Checkout base branch
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.branch }}
+        path: br-base
+        token: ${{ inputs.ghToken }}
+
+    # Generate the bundle size difference report
+    - name: Generate report
+      id: bundleSize
+      uses: nejcm/bundle-size-reporter-action@v1.4.0
+      with:
+        paths: ${{ inputs.paths }}
+        onlyDiff: ${{ inputs.onlyDiff }}
+
+    # Post github action summary
+    - name: Post summary
+      shell: bash
+      if:
+        ${{ steps.bundleSize.outputs.hasDifferences == 'true' && inputs.summary
+        == 'true' }}
+      run: |
+        echo '${{ steps.bundleSize.outputs.summary }}' >> $GITHUB_STEP_SUMMARY
+
+    # Post github action comment
+    - name: Post comment
+      uses: marocchino/sticky-pull-request-comment@v2
+      if:
+        ${{ steps.bundleSize.outputs.hasDifferences == 'true' && inputs.comment
+        == 'true' }}
+      with:
+        number: ${{ github.event.pull_request.number }}
+        header: ${{ inputs.header }}
+        append: ${{ inputs.append }}
+        message: '${{ steps.bundleSize.outputs.summary }}'
+        GITHUB_TOKEN: ${{ inputs.ghToken }}

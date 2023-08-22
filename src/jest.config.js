@@ -3,8 +3,8 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.stories.{ts,tsx}',
+    '!src/**/*.test.{ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/tests/**/*',
     '!**/types/**/*',
   ],
   coverageReporters: ['json-summary', 'json', 'lcov', 'text'],

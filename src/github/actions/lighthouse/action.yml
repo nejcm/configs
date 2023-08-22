@@ -1,0 +1,95 @@
+name: 'Lighthouse'
+description: 'Lighthouse report'
+inputs:
+  # lighthouse - https://github.com/marketplace/actions/lighthouse-ci-action
+  config:
+    description: 'Config file path'
+    required: false
+    default: './lighthouserc.js'
+  urls:
+    description: 'urls'
+    required: false
+  temporaryPublicStorage:
+    description: 'temporaryPublicStorage'
+    required: false
+    default: 'true'
+  runs:
+    description: 'runs'
+    required: false
+  budgetPath:
+    description: 'budgetPath'
+    required: false
+  serverBaseUrl:
+    description: 'serverBaseUrl'
+    required: false
+  uploadArtifacts:
+    description: 'uploadArtifacts'
+    required: false
+  lighthouseToken:
+    description: 'Lighthouse token'
+    required: true
+  ghToken:
+    description: 'Github token'
+    required: false
+  # comment
+  comment:
+    description: 'Post comment'
+    required: false
+    default: 'true'
+  comment_title:
+    description: 'Comment title'
+    required: false
+    default: 'Lighthouse'
+  append:
+    description: 'Append comment'
+    required: false
+    default: 'false'
+  # summary
+  summary:
+    description: 'Post summary'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Lighthouse
+      id: lhci
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        urls: ${{ inputs.urls }}
+        configPath: ${{ inputs.config }}
+        temporaryPublicStorage: ${{ inputs.temporaryPublicStorage }}
+        runs: ${{ inputs.runs }}
+        budgetPath: ${{ inputs.budgetPath }}
+        serverBaseUrl: ${{ inputs.serverBaseUrl }}
+        uploadArtifacts: ${{ inputs.uploadArtifacts }}
+      env:
+        LHCI_GITHUB_APP_TOKEN: ${{ inputs.lighthouseToken }}
+
+    - name: Lighthouse stats generate comment
+      uses: actions/github-script@v6
+      if: ${{ inputs.comment == 'true' }}
+      id: lighthouse_comment
+      with:
+        script: |
+          const script = require('./src/lighthouseComment.js');
+          const args = { manifest: ${{ steps.lhci.outputs.manifest }}, links: ${{ steps.lhci.outputs.links }} };
+          const comment = script(args);
+          core.setOutput("comment", comment);
+
+    - name: Lighthouse stats comment
+      if: ${{ inputs.comment == 'true' }}
+      uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        number: ${{ github.event.pull_request.number }}
+        header: ${{ inputs.comment_title }}
+        message: ${{ steps.lighthouse_comment.outputs.comment }}
+        append: ${{ inputs.append }}
+        GITHUB_TOKEN: ${{ inputs.ghToken }}
+
+    - name: Lighthouse stats summary
+      shell: bash
+      if: ${{ inputs.summary == 'true' }}
+      run: |
+        echo "${{ steps.lighthouse_comment.outputs.comment }}" >> $GITHUB_STEP_SUMMARY

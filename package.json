@@ -1,7 +1,6 @@
 {
   "name": "@nejcm/configs",
-  "private": false,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Nejc Mursic <nmursi2@gmail.com> (https://github.com/nejcm)",
   "description": "Common configs I use accross my projects.",
   "repository": {
@@ -13,18 +12,32 @@
   },
   "homepage": "https://github.com/nejcm/configs",
   "engines": {
-    "node": ">=8",
-    "npm": ">=5"
+    "node": ">=16",
+    "npm": ">=7"
   },
   "keywords": [
     "configurations",
     "config",
-    "js"
+    "js",
+    "ts"
   ],
   "main": "src/index.js",
   "files": [
     "src/*"
   ],
   "license": "MIT",
-  "scripts": {}
+  "scripts": {
+    "build": "echo 'Noop'",
+    "release": "semantic-release"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^10.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.0.4",
+    "@semantic-release/npm": "^10.0.5",
+    "@semantic-release/release-notes-generator": "^11.0.4",
+    "semantic-release": "^21.0.9"
+  },
+  "packageManager": "yarn@3.6.2"
 }
